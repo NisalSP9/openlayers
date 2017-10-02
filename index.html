@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Static Image</title>
+    <link rel="stylesheet" href="ol.css" type="text/css">
+    <script src="ol.js"></script>
+  </head>
+  <body>
+    <div id="map" class="map"></div>
+    <script>
+      // Map views always need a projection.  Here we just want to map image
+      // coordinates directly to map coordinates, so we create a projection that uses
+      // the image extent in pixels.
+      var extent = [0, 0, 1368, 600];
+      var projection = new ol.proj.Projection({
+        code: 'xkcd-image',
+        units: 'pixels',
+        extent: extent
+      });
+
+      // var iconFeature = new ol.Feature({
+      //   geometry: new ol.geom.Point([100, 300]),
+      //   name: 'Null Island',
+      //   population: 8000,
+      //   rainfall: 500
+      // });
+
+
+      // var iconFeature2 = new ol.Feature({
+      //   geometry: new ol.geom.Point([100,400]),
+      //   name: 'Null Island',
+      //   population: 8000,
+      //   rainfall: 500,
+      //   color: '#972E17',
+      // });
+
+      // var vectorSource = new ol.source.Vector({
+      //   features: [iconFeature,iconFeature2]
+      //   // ,projection: projection
+      // });
+
+      // var vectorLayer = new ol.layer.Vector({
+      //   source: vectorSource
+      // });
+
+
+      ////////////////////////////////////
+
+      var L1 = new ol.Feature({
+                geometry: new ol.geom.Point([80, 400])
+            });
+
+
+            L1.setStyle(new ol.style.Style({
+                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                    color: '#8959A8',
+                    crossOrigin: 'anonymous',
+                    src: 'on1.png'
+                }))
+            }));
+
+      
+            var L2 = new ol.Feature({
+                geometry: new ol.geom.Point([280, 540])
+            });
+
+
+            L2.setStyle(new ol.style.Style({
+                image: new ol.style.Icon(/** @type {olx.style.IconOptions} */ ({
+                    color: '#4271AE',
+                    crossOrigin: 'anonymous',
+                    src: 'on1.png'
+                }))
+            }));
+
+     
+
+
+      var vectorSource = new ol.source.Vector({
+        features: [L1,L2]
+      });
+
+      var vectorLayer = new ol.layer.Vector({
+        source: vectorSource
+      });
+
+
+
+
+      /////////////////////////////////////
+
+      var map = new ol.Map({
+        layers: [
+          new ol.layer.Image({
+            source: new ol.source.ImageStatic({
+              attributions: [
+                new ol.Attribution({
+                  html: '&copy; <a href="http://xkcd.com/license.html">xkcd</a>'
+                })
+              ],
+              url: 'room.jpg',
+              projection: projection,
+              imageExtent: extent
+            })
+          }),
+          vectorLayer
+        ],
+        target: 'map',
+        view: new ol.View({
+          projection: projection,
+          center: ol.extent.getCenter(extent),
+          zoom: 2,
+          maxZoom: 8
+        })
+      });
+    </script>
+  </body>
+</html>
